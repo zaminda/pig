@@ -1,0 +1,29 @@
+version: 2
+
+project_name: pig
+
+builds:
+  - main: .
+    binary: pig
+    goos:
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+
+brews:
+  - repository:
+      owner: zaminda
+      name: homebrew-tap
+    name: pig
+    homepage: https://github.com/zaminda/pig
+    description: Simple TUI list picker
+    license: MIT
+
+changelog:
+  sort: asc
