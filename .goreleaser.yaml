@@ -5,6 +5,8 @@ project_name: pig
 builds:
   - main: .
     binary: pig
+    ldflags:
+      - -s -w -X main.version={{.Version}}
     goos:
       - darwin
       - linux

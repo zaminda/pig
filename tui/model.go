@@ -16,21 +16,26 @@ var items = []string{
 }
 
 type Model struct {
-	Items    []string
-	Cursor   int
-	Quitting bool
+	Items        []string
+	Cursor       int
+	Quitting     bool
+	Version      string
+	UpdateNotice string
 }
 
-func NewModel() Model {
-	return Model{Items: items}
+func NewModel(version string) Model {
+	return Model{Items: items, Version: version}
 }
 
 func (m Model) Init() tea.Cmd {
-	return nil
+	return CheckLatestVersion(m.Version)
 }
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case updateAvailableMsg:
+		m.UpdateNotice = string(msg)
+		return m, nil
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "q", "ctrl+c":
@@ -55,7 +60,11 @@ func (m Model) View() string {
 	}
 
 	var b strings.Builder
-	b.WriteString("🐷 Pig — Pick a fruit!\n\n")
+	fmt.Fprintf(&b, "🐷 Pig %s", m.Version)
+	if m.UpdateNotice != "" {
+		fmt.Fprintf(&b, "  (%s)", m.UpdateNotice)
+	}
+	b.WriteString(" - Pick a fruit!\n\n")
 
 	for i, item := range m.Items {
 		cursor := "  "
