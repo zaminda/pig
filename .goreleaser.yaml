@@ -20,6 +20,7 @@ brews:
   - repository:
       owner: zaminda
       name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     name: pig
     homepage: https://github.com/zaminda/pig
     description: Simple TUI list picker
